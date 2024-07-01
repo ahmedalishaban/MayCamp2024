@@ -1,6 +1,8 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 public class MayCamp {
 
@@ -8,28 +10,40 @@ public class MayCamp {
 
     public static void main(String[] args) throws InterruptedException {
         configBrowser();
-        navigateGoogle("https://duckduckgo.com/");
+        navigateURL("https://the-internet.herokuapp.com/login");
 
-        //URL
-        String URL = getAmazonUrl();
-        System.out.println("Your URL: "+ URL);
+        System.out.println(getUsernameText().getText());
 
-        //Title
-        String amazonPageTitle = getPageTitle();
-        System.out.println("Your Page Title is: " + amazonPageTitle);
+        String subHeader = getSubHeader().getText();
+        System.out.println(subHeader);
 
-        //Page Source
-        String amazonPageSource = getAmazonPageSource();
-        System.out.println("Your Page Source is: " + amazonPageSource);
+        getUsernameField().sendKeys("tomsmith");
+        getPasswordField().sendKeys("SuperSecretPassword!");
+        getLoginBtn().click();
 
-        //Search
-        search("Nezam");
+
+
+//        navigateURL("https://the-internet.herokuapp.com/checkboxes");
+//        getDropDownPage().click();
+//        Thread.sleep(1500);
+//        getDropDownBox().selectByIndex(1);
+//        Thread.sleep(1500);
+//        getDropDownBox().selectByValue("2");
+//        Thread.sleep(1500);
+//        getDropDownBox().selectByVisibleText("Option 1");
+//        getCheckBox1().click();
+//        Thread.sleep(1500);
+//        getCheckBox2().click();
+
+
+
+
 
         //calling
     }
 
     //definition
-    static void navigateGoogle(String URL) throws InterruptedException {
+    static void navigateURL(String URL) throws InterruptedException {
         driver.navigate().to(URL);
         Thread.sleep(1500);
     }
@@ -38,21 +52,45 @@ public class MayCamp {
         driver.manage().window().maximize();
     }
 
-    static String getAmazonUrl(){
-        return driver.getCurrentUrl();
+    static WebElement getUsernameField(){
+        return driver.findElement(By.xpath("//input[@type='text']"));
     }
 
-    static String getPageTitle(){
-        return driver.getTitle();
+    static WebElement getPasswordField(){
+        return driver.findElement(By.name("password"));
     }
 
-    static String getAmazonPageSource(){
-        return driver.getPageSource();
+    static WebElement getSubHeader(){
+        return driver.findElement(By.cssSelector(".subheader"));
     }
 
-    static void search(String companyName){
-        driver.findElement(By.id("searchbox_input")).sendKeys(companyName);
-        driver.findElement(By.xpath("//button[@type='submit']")).click();
+    static WebElement getDropDownPage(){
+        return driver.findElement(By.linkText("Dropdown"));
+    }
+
+    static WebElement getLoginPage(){
+        return driver.findElement(By.partialLinkText("Form"));
+    }
+
+    static WebElement getUsernameText(){
+        return driver.findElement(By.xpath("//label[@for='username']"));
+    }
+
+    static Select getDropDownBox(){
+        Select selectOption = new Select(driver.findElement(By.xpath("//select[@id='dropdown']")));
+        return selectOption;
+    }
+
+    static WebElement getCheckBox1(){
+        return driver.findElement(By.xpath("(//input[@type='checkbox'])[1]"));
+    }
+
+    static WebElement getCheckBox2(){
+        return driver.findElement(By.xpath("(//input[@type='checkbox'])[2]"));
+    }
+
+    static WebElement getLoginBtn(){
+        return driver.findElement(By.className("radius"));
     }
 
 }
